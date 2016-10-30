@@ -1,6 +1,6 @@
 {
   "name": "roguelike-dungeon-crawler",
-  "homepage": "https://marckimbrey.github.io/roguelike-dungeon-crawler"
+  "homepage": "https://marckimbrey.github.io/roguelike-dungeon-crawler",
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
