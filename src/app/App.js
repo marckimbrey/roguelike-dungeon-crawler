@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import './App.css';
 import generateDungeon from '../dungeon';
-import Canvas from '../canvas/Canvas';
+import Canvas from '../Canvas/Canvas';
 
 class App extends Component {
   constructor() {
