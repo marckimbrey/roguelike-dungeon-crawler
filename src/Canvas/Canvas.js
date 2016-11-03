@@ -5,21 +5,16 @@ import React, {Component} from 'react';
 // 4 = enemy2
 // 5 = item
 export default class extends Component {
-  constructor(props) {
-    super();
-    this.dungeon = props.dungeonMap;
-    this.playerLocation = props.playerLocation;
-  }
+
   componentDidMount() {
-    this.updateCanvas(this.dungeon, this.playerLocation);
+    this.updateCanvas(this.props.dungeonMap, this.props.playerLocation);
 
   }
-  componentWillUpdate() {
-
+  componentDidUpdate() {
+    this.updateCanvas(this.props.dungeonMap, this.props.playerLocation);
   }
   updateCanvas(grid, playerLocation) {
     let visableGrid = grid.filter((row, x) => {
-      console.log(playerLocation.x +7);
       if (playerLocation.x -7 < 0) {
         return x <= 14;
       } else if (playerLocation.x +7 > row.length -1) {
@@ -30,7 +25,6 @@ export default class extends Component {
 
     }).map((row) => {
       return row.filter((sqr, y) => {
-              console.log(playerLocation.y);
         if (playerLocation.y -7 < 0) {
           return y <= 14;
         } else if (playerLocation.y +7 > row.length -1) {

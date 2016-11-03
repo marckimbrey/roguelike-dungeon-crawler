@@ -5,8 +5,8 @@ import generateDungeon from '../dungeon';
 import Canvas from '../Canvas/Canvas';
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     const dungeonMap = generateDungeon();
     let playerLocation;
      dungeonMap.forEach((row, x) => {
@@ -25,17 +25,83 @@ class App extends Component {
         location: playerLocation
       }
     }
+    this.onArrowKeyPress = this.onArrowKeyPress.bind(this);
+  }
+  componentDidMount() {
+    window.addEventListener("keydown", this.onArrowKeyPress);
+  }
+
+  onArrowKeyPress(event) {
+    const x = this.state.player.location.x;
+    const y = this.state.player.location.y;
+    let newDungeonState = this.state.dungeonMap;
+    switch(event.keyCode) {
+      case 38: // up
+        newDungeonState[x][y].tile =1
+        newDungeonState[x][y-1].tile ='player'
+        this.setState({
+          dungeonMap: newDungeonState,
+          player:{
+            location: {
+              x: x,
+              y: y-1
+            }}
+        });
+        break;
+      case 39: // right
+        newDungeonState[x][y].tile =1
+        newDungeonState[x+1][y].tile ='player'
+        this.setState({
+          dungeonMap: newDungeonState,
+          player:{
+            location: {
+              x: x+1,
+              y: y
+            }}
+        });
+        break;
+      case 40: // down
+        newDungeonState[x][y].tile =1
+        newDungeonState[x][y+1].tile ='player'
+        this.setState({
+          dungeonMap: newDungeonState,
+          player:{
+            location: {
+              x: x,
+              y: y+1
+            }}
+        });
+        break;
+      case 37: // left
+        newDungeonState[x][y].tile =1
+        newDungeonState[x-1][y].tile ='player'
+        this.setState({
+          dungeonMap: newDungeonState,
+          player:{
+            location: {
+              x: x-1,
+              y: y
+            }}
+        });
+        break;
+      default:
+        console.log(`key does not match: ${event.keyCode}`);
+        break;
+    }
   }
   render() {
     return (
-      <div className="App">
+      <div className="App"
+
+
+      >
         <Canvas
           dungeonMap={this.state.dungeonMap}
           playerLocation={this.state.player.location}
+
         />
       </div>
     );
   }
 }
-
 export default App;
