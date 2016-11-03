@@ -15,7 +15,10 @@ export default function GenerateDungeon() {
   for(let x=0; x<mapSize; x++) {
     dungeonMap[x] = [];
     for(let y=0; y<mapSize; y++) {
-        dungeonMap[x][y] = {tile: 0};
+        dungeonMap[x][y] = {
+          tile: 0,
+          explored: false
+        };
     }
   };
   // add random sized rooms

@@ -19,11 +19,24 @@ export default class extends Component {
   }
   updateCanvas(grid, playerLocation) {
     let visableGrid = grid.filter((row, x) => {
-      return x >= playerLocation.x -7 && x <= playerLocation.x +7;
+      console.log(playerLocation.x +7);
+      if (playerLocation.x -7 < 0) {
+        return x <= 14;
+      } else if (playerLocation.x +7 > row.length -1) {
+        return x >= row.length -15;
+      } else {
+        return x >= playerLocation.x -7 && x <= playerLocation.x +7;
+      }
+
     }).map((row) => {
       return row.filter((sqr, y) => {
-        if (y >= playerLocation.y -7 && y <= playerLocation.y +7) {
-          return sqr;
+              console.log(playerLocation.y);
+        if (playerLocation.y -7 < 0) {
+          return y <= 14;
+        } else if (playerLocation.y +7 > row.length -1) {
+          return y >= row.length -15;
+        } else {
+          return y >= playerLocation.y -7 && y <= playerLocation.y +7;
         }
       });
     });
