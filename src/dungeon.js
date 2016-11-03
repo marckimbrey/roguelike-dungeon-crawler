@@ -15,7 +15,7 @@ export default function GenerateDungeon() {
   for(let x=0; x<mapSize; x++) {
     dungeonMap[x] = [];
     for(let y=0; y<mapSize; y++) {
-        dungeonMap[x][y] = 0;
+        dungeonMap[x][y] = {tile: 0};
     }
   };
   // add random sized rooms
@@ -59,69 +59,38 @@ export default function GenerateDungeon() {
         else pointB.y++;
       }
 
-      dungeonMap[pointB.x][pointB.y] = 1;
+      dungeonMap[pointB.x][pointB.y].tile = 1;
     }
   };
 
   // set insides of rooms = 1
-  for (let i=0; i<roomCount; i++) {
-    const curRoom = rooms[i];
-    for(let x=curRoom.x; x<curRoom.x +curRoom.w; x++) {
-      for(let y=curRoom.y; y<curRoom.y +curRoom.h; y++) {
-        dungeonMap[x][y] = 1
+  rooms.forEach((room) => {
+    for(let x=room.x; x<room.x +room.w; x++) {
+      for(let y=room.y; y<room.y +room.h; y++) {
+        dungeonMap[x][y].tile = 1
       }
     }
-  };
+  });
   /*iterates through all the tiles in the map and if it finds a tile that is  =1
   check all the surrounding tiles for empty values. If we find an empty tile
   (that touches the floor) we build a wall =2.*/
   for(let x=0; x<mapSize; x++) {
     for(let  y=0; y<mapSize; y++) {
-      if (dungeonMap[x][y] === 1) {
+      if (dungeonMap[x][y].tile === 1) {
         for (let xx = x - 1; xx <= x + 1; xx++) {
           for (let yy = y - 1; yy <= y + 1; yy++) {
-            if (dungeonMap[xx][yy] === 0) dungeonMap[xx][yy] = 2;
+            if (dungeonMap[xx][yy].tile === 0) dungeonMap[xx][yy].tile = 2;
           }
         }
       }
     }
   };
 
-  let firstSquare = [];
-
-  // find first square of room or corridor
-  for (let x=0; x<dungeonMap.length; x++){
-    for(let y=0; y<dungeonMap[0].length; y++) {
-      if (dungeonMap[x][y] === 1) {
-        firstSquare = [x,y];
-        break;
-      }
-    };
-    if (firstSquare.length > 1) {
-      break;
-    }
-  };
-  // floodFill recursively checks adjacient squares to see if any rooms aren't connected
-  let checkMap =  floodFill(dungeonMap, firstSquare[0], firstSquare[1]);
-  let connected = true;
-
-  for (let x=0; x<checkMap.length; x++) {
-    for (let y=0; y<checkMap[0].length; y++) {
-       if (checkMap[x][y] === 1) {
-         connected = false;
-         break;
-       }
-    };
-    if(!connected) {
-      break;
-    }
-  };
-
-  if (connected === false) {
-    GenerateDungeon();
-  } else {
-    return dungeonMap;
-  }
+    rooms.forEach((room) => {
+      const newVal = fillRoom(room);
+      dungeonMap[newVal[0].x][newVal[0].y].tile = newVal[1];
+    });
+  return dungeonMap;
 }
 
 function DoesCollide(room, rooms, ignore) {
@@ -134,25 +103,19 @@ function DoesCollide(room, rooms, ignore) {
   return false
 }
 
-function floodFill(mapData , x, y) {
-  const mapWidth = mapData.length,
-    mapHeight = mapData[0].length;
-    if(mapData[x][y] === 1) {
-      mapData[x][y] = 1.5;
-      if (x > 0){ // left
-         floodFill(mapData, x-1, y);
-      }
-      if(y > 0){ // up
-          floodFill(mapData, x, y-1);
-      }
-      if(x < mapWidth-1){ // right
-          floodFill(mapData, x+1, y);
-      }
-      if(y < mapHeight-1){ // down
-          floodFill(mapData, x, y+1);
-      }
-      return mapData;
-    }
+function fillRoom(room) {
+  const val = Math.random();
+  const randomSquare  = {
+    x: getRandom(room.x, room.x + room.w),
+    y: getRandom(room.y,  room.y + room.h)
+  };
+  if (val < .5) {
+    return [randomSquare, 3]
+  } else if (val < .8) {
+        return [randomSquare, 4]
+  } else {
+        return [randomSquare, 5]
+  }
 
 
 }

@@ -1,5 +1,9 @@
 import React, {Component} from 'react';
-
+// 1.5 = floor
+// 2 = wall
+// 3 = enemy
+// 4 = enemy2
+// 5 = item
 export default class extends Component {
   constructor(props) {
     super();
@@ -16,11 +20,20 @@ export default class extends Component {
     ctx.clearRect(0,0, 900, 900);
     grid.forEach((row, x) => {
       row.forEach((sqr, y)=> {
-        if(sqr === 1.5) {
+        if(sqr.tile === 1) {
           ctx.fillStyle = "red";
           ctx.fillRect(x * 15, y*15, 15, 15);
-        } else if (sqr === 2) {
+        } else if (sqr.tile === 2) {
           ctx.fillStyle = "grey";
+          ctx.fillRect(x*15, y*15, 15, 15);
+        } else if (sqr.tile === 3){
+          ctx.fillStyle = "blue";
+          ctx.fillRect(x*15, y*15, 15, 15);
+        }else if (sqr.tile === 4){
+          ctx.fillStyle = "green";
+          ctx.fillRect(x*15, y*15, 15, 15);
+        } else if (sqr.tile === 5){
+          ctx.fillStyle = "yellow";
           ctx.fillRect(x*15, y*15, 15, 15);
         } else {
           ctx.fillStyle = '#111';
