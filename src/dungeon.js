@@ -85,11 +85,21 @@ export default function GenerateDungeon() {
       }
     }
   };
+  let player = false, boss = false;
+  rooms.forEach((room) => {
+    let newVal;
+    if (!player) {
+      player = true;
+      newVal = fillRoom(room, 'player');
+    } else if (!boss) {
+      boss = true;
+      newVal = fillRoom(room, 'boss');
+    } else {
+      newVal = fillRoom(room);
+    }
 
-    rooms.forEach((room) => {
-      const newVal = fillRoom(room);
-      dungeonMap[newVal[0].x][newVal[0].y].tile = newVal[1];
-    });
+    dungeonMap[newVal[0].x][newVal[0].y].tile = newVal[1];
+  });
   return dungeonMap;
 }
 
@@ -103,18 +113,24 @@ function DoesCollide(room, rooms, ignore) {
   return false
 }
 
-function fillRoom(room) {
+function fillRoom(room, char) {
   const val = Math.random();
   const randomSquare  = {
     x: getRandom(room.x, room.x + room.w),
     y: getRandom(room.y,  room.y + room.h)
   };
-  if (val < .5) {
-    return [randomSquare, 3]
-  } else if (val < .8) {
-        return [randomSquare, 4]
+  if (char) {
+    return [randomSquare, char];
   } else {
-        return [randomSquare, 5]
+    if (val < .4) {
+      return [randomSquare, 'enemy1']
+    } else if (val < .6) {
+      return [randomSquare, 'health']
+    } else if (val < .8) {
+      return [randomSquare, 'enemy2']
+    } else {
+          return [randomSquare, 'item']
+    }
   }
 
 
