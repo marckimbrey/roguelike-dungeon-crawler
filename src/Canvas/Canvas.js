@@ -45,10 +45,10 @@ export default class extends Component {
         } else if (sqr.tile === 2) {
           ctx.fillStyle = "grey";
           ctx.fillRect(x * 60, y*60, 60, 60);
-        } else if (sqr.tile === 3){
+        } else if (sqr.tile === 'enemy1'){
           ctx.fillStyle = "blue";
           ctx.fillRect(x * 60, y*60, 60, 60);
-        }else if (sqr.tile === 4){
+        }else if (sqr.tile === 'enemy2'){
           ctx.fillStyle = "green";
           ctx.fillRect(x * 60, y*60, 60, 60);
         } else if (sqr.tile === 'player'){

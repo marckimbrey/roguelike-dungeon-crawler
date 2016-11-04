@@ -37,52 +37,60 @@ class App extends Component {
     let newDungeonState = this.state.dungeonMap;
     switch(event.keyCode) {
       case 38: // up
-        newDungeonState[x][y].tile =1
-        newDungeonState[x][y-1].tile ='player'
-        this.setState({
-          dungeonMap: newDungeonState,
-          player:{
-            location: {
-              x: x,
-              y: y-1
-            }}
-        });
+        if(newDungeonState[x][y-1].tile !== 2) {
+          newDungeonState[x][y].tile =1
+          newDungeonState[x][y-1].tile ='player'
+          this.setState({
+            dungeonMap: newDungeonState,
+            player:{
+              location: {
+                x: x,
+                y: y-1
+              }}
+          });
+        };
         break;
       case 39: // right
-        newDungeonState[x][y].tile =1
-        newDungeonState[x+1][y].tile ='player'
-        this.setState({
-          dungeonMap: newDungeonState,
-          player:{
-            location: {
-              x: x+1,
-              y: y
-            }}
-        });
+        if (newDungeonState[x+1][y].tile !== 2) {
+          newDungeonState[x][y].tile =1
+          newDungeonState[x+1][y].tile ='player'
+          this.setState({
+            dungeonMap: newDungeonState,
+            player:{
+              location: {
+                x: x+1,
+                y: y
+              }}
+          });
+        }
         break;
       case 40: // down
-        newDungeonState[x][y].tile =1
-        newDungeonState[x][y+1].tile ='player'
-        this.setState({
-          dungeonMap: newDungeonState,
-          player:{
-            location: {
-              x: x,
-              y: y+1
-            }}
-        });
+        if (newDungeonState[x][y+1].tile !== 2) {
+          newDungeonState[x][y].tile =1
+          newDungeonState[x][y+1].tile ='player'
+          this.setState({
+            dungeonMap: newDungeonState,
+            player:{
+              location: {
+                x: x,
+                y: y+1
+              }}
+          });
+        };
         break;
       case 37: // left
-        newDungeonState[x][y].tile =1
-        newDungeonState[x-1][y].tile ='player'
-        this.setState({
-          dungeonMap: newDungeonState,
-          player:{
-            location: {
-              x: x-1,
-              y: y
-            }}
-        });
+        if (newDungeonState[x-1][y].tile !== 2) {
+          newDungeonState[x][y].tile =1
+          newDungeonState[x-1][y].tile ='player'
+          this.setState({
+            dungeonMap: newDungeonState,
+            player:{
+              location: {
+                x: x-1,
+                y: y
+              }}
+          });
+        };
         break;
       default:
         console.log(`key does not match: ${event.keyCode}`);
