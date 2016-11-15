@@ -36,11 +36,11 @@ export default class extends Component {
     });
 
     const ctx = this.refs.canvas.getContext('2d');
-    ctx.clearRect(0,0, 900, 900);
+    // ctx.clearRect(0,0, 900, 900);
     visableGrid.forEach((row, x) => {
       row.forEach((sqr, y)=> {
         if(sqr.tile === 1) {
-          ctx.fillStyle = "red";
+          ctx.fillStyle = "brown";
           ctx.fillRect(x * 60, y*60, 60, 60);
         } else if (sqr.tile === 2) {
           ctx.fillStyle = "grey";
@@ -53,6 +53,9 @@ export default class extends Component {
           ctx.fillRect(x * 60, y*60, 60, 60);
         } else if (sqr.tile === 'player'){
           ctx.fillStyle = "yellow";
+          ctx.fillRect(x * 60, y*60, 60, 60);
+        } else if (sqr.tile === 'boss'){
+          ctx.fillStyle = "pink";
           ctx.fillRect(x * 60, y*60, 60, 60);
         } else {
           ctx.fillStyle = '#111';

@@ -17,7 +17,8 @@ export default function GenerateDungeon() {
     for(let y=0; y<mapSize; y++) {
         dungeonMap[x][y] = {
           tile: 0,
-          explored: false
+          explored: false,
+          enemy: false
         };
     }
   };
@@ -89,6 +90,14 @@ export default function GenerateDungeon() {
     }
   };
   let player = false, boss = false;
+  const enemy1 = {
+    health: 20,
+    attack: 6
+  };
+  const enemy2 = {
+    health: 40,
+    attack: 8
+  }
   rooms.forEach((room) => {
     let newVal;
     if (!player) {
@@ -100,7 +109,19 @@ export default function GenerateDungeon() {
     } else {
       newVal = fillRoom(room);
     }
-
+    switch (newVal[1]) {
+      case 'boss':
+        dungeonMap[newVal[0].x][newVal[0].y].enemy = 'boss';
+        break;
+      case 'enemy1':
+        dungeonMap[newVal[0].x][newVal[0].y].enemy = enemy1;
+        break;
+      case 'enemy2':
+        dungeonMap[newVal[0].x][newVal[0].y].enemy = enemy2;
+        break;
+      default:
+      break;
+    }
     dungeonMap[newVal[0].x][newVal[0].y].tile = newVal[1];
   });
   return dungeonMap;
