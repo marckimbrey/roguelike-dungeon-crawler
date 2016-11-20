@@ -50,7 +50,7 @@ let dungeon = (function(){
 
     addWalls();
 
-    let player = false, boss = false;
+    let player = false, isABoss = false;
     const enemy1 = {
       health: 20,
       attack: 6
@@ -58,27 +58,31 @@ let dungeon = (function(){
     const enemy2 = {
       health: 40,
       attack: 8
+    };
+    const boss = {
+      health: 80,
+      attack: 12
     }
     rooms.forEach((room) => {
       let newVal;
       if (!player) {
         player = true;
         newVal = fillRoom(room, 'player');
-      } else if (!boss) {
-        boss = true;
+      } else if (!isABoss) {
+        isABoss = true;
         newVal = fillRoom(room, 'boss');
       } else {
         newVal = fillRoom(room);
       }
       switch (newVal[1]) {
         case 'boss':
-          dungeonMap[newVal[0].x][newVal[0].y].enemy = 'boss';
+          dungeonMap[newVal[0].x][newVal[0].y].enemy = boss;
           break;
         case 'enemy1':
-          dungeonMap[newVal[0].x][newVal[0].y].enemy = enemy1;
+          dungeonMap[newVal[0].x][newVal[0].y].enemy = Object.create(enemy1);
           break;
         case 'enemy2':
-          dungeonMap[newVal[0].x][newVal[0].y].enemy = enemy2;
+          dungeonMap[newVal[0].x][newVal[0].y].enemy =  Object.create(enemy2);
           break;
         default:
         break;
