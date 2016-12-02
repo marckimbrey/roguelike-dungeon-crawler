@@ -38,34 +38,33 @@ class App extends Component {
     const y = this.state.player.location.y;
     let newDungeonState = this.state.dungeonMap;
     const moveDirection = Movement.getDirection(event.keyCode);
-    const destination = newDungeonState[x + moveDirection.x][y + moveDirection.y];
-    const newCoords = { x: x + moveDirection.x, y: y + moveDirection.y }
-    if(destination.enemy) {
-      this.setState(Object.assign(
-        {},
-        this.state,
-        Combat.attack(newCoords.x, newCoords.y, destination.enemy, this.state.player, this.state.dungeonMap)
-      ));
-    } else if(destination.tile !== 2) {
-      newDungeonState[x][y].tile =1
-      newDungeonState[newCoords.x][newCoords.y].tile ='player'
-      const newPlayerState = Object.assign(
-        {},
-        this.state.player,
-        {location: {
-          x: newCoords.x,
-          y: newCoords.y
-        }
-      });
-      this.setState({
-        dungeonMap: newDungeonState,
-        player: newPlayerState
-      });
-    };
 
-  }
-
-  addExperience() {
+    if(moveDirection) {
+      const destination = newDungeonState[x + moveDirection.x][y + moveDirection.y];
+      const newCoords = { x: x + moveDirection.x, y: y + moveDirection.y };
+      if(destination.enemy) {
+        this.setState(Object.assign(
+          {},
+          this.state,
+          Combat.attack(newCoords.x, newCoords.y, destination.enemy, this.state.player, this.state.dungeonMap)
+        ));
+      } else if(destination.tile !== 2) {
+        newDungeonState[x][y].tile =1
+        newDungeonState[newCoords.x][newCoords.y].tile ='player'
+        const newPlayerState = Object.assign(
+          {},
+          this.state.player,
+          {location: {
+            x: newCoords.x,
+            y: newCoords.y
+          }
+        });
+        this.setState({
+          dungeonMap: newDungeonState,
+          player: newPlayerState
+        });
+      }
+    }
 
   }
 

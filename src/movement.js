@@ -20,7 +20,7 @@ const movement = (function() {
           direction = {x: -1 , y: 0};
           break;
         default:
-          direction = undefined;
+          direction = null;
           break;
     }
     return direction
