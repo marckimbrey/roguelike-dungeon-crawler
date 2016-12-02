@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './App.css';
 import dungeon from '../dungeon';
 import Canvas from '../Canvas/Canvas';
+import Combat from '../combat';
 
 class App extends Component {
   constructor(props) {
@@ -23,10 +24,6 @@ class App extends Component {
           name: 'hands',
           attack: 5
         }
-      },
-      boss: {
-        health: 80,
-        attack: 12,
       }
     }
     this.onArrowKeyPress = this.onArrowKeyPress.bind(this);
@@ -43,7 +40,7 @@ class App extends Component {
     switch(event.keyCode) {
       case 38: // up
         if(newDungeonState[x][y-1].enemy) {
-          this.combat(x, y-1, newDungeonState[x][y-1].enemy, this.state.player );
+          Combat.attack(x, y-1, newDungeonState[x][y-1].enemy, this.state.player, this.state.dungeonMap );
         } else if(newDungeonState[x][y-1].tile !== 2) {
           newDungeonState[x][y].tile =1
           newDungeonState[x][y-1].tile ='player'
@@ -63,7 +60,7 @@ class App extends Component {
         break;
       case 39: // right
         if (newDungeonState[x+1][y].enemy) {
-          this.combat(x+1, y, newDungeonState[x+1][y].enemy, this.state.player);
+          Combat.attack(x+1, y, newDungeonState[x+1][y].enemy, this.state.player, this.state.dungeonMap);
         } else if (newDungeonState[x+1][y].tile !== 2) {
           newDungeonState[x][y].tile =1
           newDungeonState[x+1][y].tile ='player';
@@ -83,7 +80,7 @@ class App extends Component {
         break;
       case 40: // down
         if(newDungeonState[x][y+1].enemy) {
-          this.combat(x, y+1, newDungeonState[x][y+1].enemy, this.state.player);
+          Combat.attack(x, y+1, newDungeonState[x][y+1].enemy, this.state.player, this.state.dungeonMap);
         } else if (newDungeonState[x][y+1].tile !== 2) {
           newDungeonState[x][y].tile =1
           newDungeonState[x][y+1].tile ='player';
@@ -103,7 +100,7 @@ class App extends Component {
         break;
       case 37: // left
         if (newDungeonState[x-1][y].enemy) {
-          this.combat(x-1, y, newDungeonState[x-1][y].enemy, this.state.player);
+          Combat.attack(x-1, y, newDungeonState[x-1][y].enemy, this.state.player, this.state.dungeonMap);
         } else if (newDungeonState[x-1][y].tile !== 2) {
           newDungeonState[x][y].tile =1
           newDungeonState[x-1][y].tile ='player';
@@ -126,36 +123,9 @@ class App extends Component {
         break;
     }
   }
-  combat(x, y, enemy, player) {
-    console.log(player, player.health, enemy.health);
-    let newDungeonMap = this.state.dungeonMap;
-    let newPlayer;
-    // calculate players damage
-    const playerDamage = this.calculateDamage(player.attack + player.weapon.attack);
-    // calculate enemy damage
-    const enemyDamage = this.calculateDamage(enemy.attack);
-    // make attack
-    player.health -= enemyDamage;
-    enemy.health -= playerDamage;
-    if (player.health <= 0) { // if player is killed
-      this.gameOver();
-    } else if (enemy.health <= 0) { // if enemy is killed
-      newDungeonMap.tile = 1;
-      newDungeonMap[x][y].enemy = false;
-      this.setState(Object.assign({}, this.state.dungeonMap, newDungeonMap));
-    } else { // calculate new health
-      newDungeonMap[x][y].enemy = enemy;
-      newPlayer = Object.assign({}, this.state.player, player);
 
-      this.setState(Object.assign(
-        {},
-        this.state,
-        {dungeonMap: newDungeonMap, player: newPlayer}
-      ));
-    }
-  }
-  calculateDamage(attack) {
-    return Math.round(Math.random() * ((attack + 3) - attack) + attack);
+  addExperience() {
+
   }
 
   gameOver() {
