@@ -1,11 +1,11 @@
 const combat = (function() {
   function attack(x, y, enemy, player, dungeonMap) {
-    console.log(player, player.health, enemy.health);
+    console.log(player.health, enemy.health);
     let newDungeonMap = dungeonMap;
     // calculate players damage
-    const playerDamage = calculateDamage(player.attack + player.weapon.attack);
+    const playerDamage = _calculateDamage(player.attack + player.weapon.attack);
     // calculate enemy damage
-    const enemyDamage = calculateDamage(enemy.attack);
+    const enemyDamage = _calculateDamage(enemy.attack);
 
     // make attack
     player.health -= enemyDamage;
@@ -20,7 +20,7 @@ const combat = (function() {
     return {dungeonMap: newDungeonMap, player: player}
   }
 
-  function calculateDamage(attack) {
+  function _calculateDamage(attack) {
     return Math.round(Math.random() * ((attack + 3) - attack) + attack);
   }
   return ({
