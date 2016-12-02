@@ -14,10 +14,25 @@ const combat = (function() {
       alert("GAME OVER!!!");
     } else if (enemy.health <= 0) { // if enemy is killed
       newDungeonMap.tile = 1;
+      console.log("old health", player.health);
+      player = _addExerience(player, newDungeonMap[x][y].enemy.attack);
       newDungeonMap[x][y].enemy = false;
     }
 
     return {dungeonMap: newDungeonMap, player: player}
+  }
+
+  function _addExerience(player, exp) {
+    player.experience += exp;
+    if (player.level < Math.floor(player.experience / 15) +1) _addLevel(player);
+    return player
+  }
+
+  function _addLevel(player) {
+    player.level++;
+    player.attack += Math.round(Math.random() * 2);
+    player.health += Math.round(Math.random() * (player.health * 0.25))
+    return player;
   }
 
   function _calculateDamage(attack) {
