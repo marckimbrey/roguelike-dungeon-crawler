@@ -42,6 +42,7 @@ class App extends Component {
     if(moveDirection) {
       const destination = newDungeonState[x + moveDirection.x][y + moveDirection.y];
       const newCoords = { x: x + moveDirection.x, y: y + moveDirection.y };
+      let newPlayerState;
       if(destination.enemy) {
         this.setState(Object.assign(
           {},
@@ -49,11 +50,16 @@ class App extends Component {
           Combat.attack(newCoords.x, newCoords.y, destination.enemy, this.state.player, this.state.dungeonMap)
         ));
       } else if(destination.tile !== 2) {
+        if(destination.tile === 'item' || destination.tile === 'health') {
+          newPlayerState = Movement.pickUpItem(this.state.player, destination.tile);
+
+        }
         newDungeonState[x][y].tile =1
         newDungeonState[newCoords.x][newCoords.y].tile ='player'
-        const newPlayerState = Object.assign(
+         newPlayerState = Object.assign(
           {},
           this.state.player,
+          newPlayerState,
           {location: {
             x: newCoords.x,
             y: newCoords.y

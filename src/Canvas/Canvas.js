@@ -57,6 +57,12 @@ export default class extends Component {
         } else if (sqr.tile === 'boss'){
           ctx.fillStyle = "pink";
           ctx.fillRect(x * 60, y*60, 60, 60);
+        }  else if (sqr.tile === 'health'){
+          ctx.fillStyle = "red";
+          ctx.fillRect(x * 60, y*60, 60, 60);
+        }  else if (sqr.tile === 'item'){
+          ctx.fillStyle = "silver";
+          ctx.fillRect(x * 60, y*60, 60, 60);
         } else {
           ctx.fillStyle = '#111';
           ctx.fillRect(x * 60, y*60, 60, 60);

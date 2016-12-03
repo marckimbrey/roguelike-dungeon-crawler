@@ -26,8 +26,37 @@ const movement = (function() {
     return direction
   }
 
+  function pickUpItem(player, itemType) {
+    const weapons = [
+      {name: 'hands', attack: 5},
+      {name: 'stick', attack: 8},
+      {name: 'knife', attack: 10},
+      {name: 'shortsword', attack: 12},
+      {name: 'longsword', attack: 16},
+      {name: 'battleaxe', attack: 20}
+    ];
+    let currItemIndex;
+    if (itemType === 'health') {
+      player.health += 20
+    } else if (itemType === 'item') {
+      weapons.forEach((e,i)=> {
+        if(e.name === player.weapon.name) {
+          currItemIndex = i;
+        }
+      });
+      if (currItemIndex < weapons.length - 1) {
+        player.weapon = weapons[currItemIndex +1];
+      }
+    }
+
+    return player;
+  }
+
   return (
-    {getDirection}
+    {
+      getDirection,
+      pickUpItem
+    }
   )
 })()
 
