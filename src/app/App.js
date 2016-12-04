@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './App.css';
 import dungeon from '../dungeon';
 import Canvas from '../Canvas/Canvas';
+import PlayerStats from '../PlayerStats/PlayerStats';
 import Combat from '../combat';
 import Movement from '../movement';
 
@@ -85,6 +86,9 @@ class App extends Component {
           playerLocation={this.state.player.location}
 
         />
+        <div>
+          <PlayerStats player={this.state.player}/> 
+        </div>
       </div>
     );
   }
