@@ -87,7 +87,7 @@ class App extends Component {
 
         />
         <div>
-          <PlayerStats player={this.state.player}/> 
+          <PlayerStats player={this.state.player}/>
         </div>
       </div>
     );
