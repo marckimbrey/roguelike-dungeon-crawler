@@ -1,6 +1,7 @@
 let dungeon = (function(){
 
   let dungeonMap = [];
+  let enemies = [];
   const mapSize = 60;
   let rooms = [];
 
@@ -77,12 +78,15 @@ let dungeon = (function(){
       switch (newVal[1]) {
         case 'boss':
           dungeonMap[newVal[0].x][newVal[0].y].enemy = boss;
+          enemies.push(Object.assign({ x: newVal[0].x, y: newVal[0].y}, boss));
           break;
         case 'enemy1':
-          dungeonMap[newVal[0].x][newVal[0].y].enemy = Object.create(enemy1);
+          dungeonMap[newVal[0].x][newVal[0].y].enemy = enemy1;
+          enemies.push(Object.assign({ x: newVal[0].x, y: newVal[0].y}, Object.create(enemy1)));
           break;
         case 'enemy2':
-          dungeonMap[newVal[0].x][newVal[0].y].enemy =  Object.create(enemy2);
+          dungeonMap[newVal[0].x][newVal[0].y].enemy =  enemy2;
+          enemies.push(Object.assign({ x: newVal[0].x, y: newVal[0].y}, Object.create(enemy2)));
           break;
         default:
         break;
@@ -191,7 +195,8 @@ let dungeon = (function(){
   return ({
     generate: generate,
     dungeonMap: dungeonMap,
-    playerLocation: playerLocation
+    playerLocation: playerLocation,
+    enemies: enemies
   })
 })();
 
