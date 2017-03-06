@@ -1,3 +1,5 @@
+import createEnemy from './enemy';
+const enemy = createEnemy;
 let dungeon = (function(){
 
   let dungeonMap = [];
@@ -52,18 +54,7 @@ let dungeon = (function(){
     addWalls();
 
     let player = false, isABoss = false;
-    const enemy1 = {
-      health: 20,
-      attack: 6
-    };
-    const enemy2 = {
-      health: 40,
-      attack: 8
-    };
-    const boss = {
-      health: 80,
-      attack: 12
-    }
+
     rooms.forEach((room) => {
       let newVal;
       if (!player) {
@@ -75,24 +66,14 @@ let dungeon = (function(){
       } else {
         newVal = fillRoom(room);
       }
-      switch (newVal[1]) {
-        case 'boss':
-          dungeonMap[newVal[0].x][newVal[0].y].enemy = boss;
-          enemies.push(Object.assign({ x: newVal[0].x, y: newVal[0].y}, boss));
-          break;
-        case 'enemy1':
-          dungeonMap[newVal[0].x][newVal[0].y].enemy = enemy1;
-          enemies.push(Object.assign({ x: newVal[0].x, y: newVal[0].y}, Object.create(enemy1)));
-          break;
-        case 'enemy2':
-          dungeonMap[newVal[0].x][newVal[0].y].enemy =  enemy2;
-          enemies.push(Object.assign({ x: newVal[0].x, y: newVal[0].y}, Object.create(enemy2)));
-          break;
-        default:
-        break;
+      if (newVal.type === 'boss' || newVal.type === 'enemy1'|| newVal.type === 'enemy2') {
+          let newEnemy = new enemy();
+          newEnemy.createEnemy(newVal);
+          enemies.push(newEnemy);
       }
-      dungeonMap[newVal[0].x][newVal[0].y].tile = newVal[1];
+      dungeonMap[newVal.x][newVal.y].tile = newVal.type;
     });
+    console.log(enemies);
     return dungeonMap;
   }
 
@@ -161,17 +142,19 @@ let dungeon = (function(){
       x: getRandom(room.x, room.x + room.w),
       y: getRandom(room.y,  room.y + room.h)
     };
-    if (char) {
-      return [randomSquare, char];
+    if (char === 'player') {
+      return Object.assign(randomSquare, {type:'player'});
+    } else if (char === 'boss')  {
+      return Object.assign(randomSquare, {type:'boss'})
     } else {
       if (val < .4) {
-        return [randomSquare, 'enemy1']
+        return Object.assign(randomSquare, {type:'enemy1'});
       } else if (val < .6) {
-        return [randomSquare, 'health']
+        return Object.assign(randomSquare, {type:'health'});
       } else if (val < .8) {
-        return [randomSquare, 'enemy2']
+        return Object.assign(randomSquare, {type:'enemy2'});
       } else {
-            return [randomSquare, 'item']
+            return Object.assign(randomSquare, {type:'item'})
       }
     }
   }
