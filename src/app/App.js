@@ -6,6 +6,7 @@ import Canvas from '../Canvas/Canvas';
 import PlayerStats from '../PlayerStats/PlayerStats';
 import Combat from '../combat';
 import Movement from '../movement';
+import player from '../player';
 
 class App extends Component {
   constructor(props) {
@@ -13,20 +14,13 @@ class App extends Component {
 
     dungeon.generate();
     const dungeonMap = dungeon.dungeonMap;
+    const newPlayer = Object.assign(new player.newPlayer,{location: dungeon.playerLocation(dungeonMap)})
+
 
     this.state  = {
       dungeonMap: dungeonMap,
-      player: {
-        level: 1,
-        experience: 0,
-        health: 60,
-        attack: 5,
-        location: dungeon.playerLocation(),
-        weapon: {
-          name: 'hands',
-          attack: 5
-        }
-      }
+      player:newPlayer,
+      enemies: dungeon.enemies
     }
     this.onArrowKeyPress = this.onArrowKeyPress.bind(this);
   }
@@ -35,44 +29,8 @@ class App extends Component {
   }
 
   onArrowKeyPress(event) {
-    const x = this.state.player.location.x;
-    const y = this.state.player.location.y;
-    let newDungeonState = this.state.dungeonMap;
-    const moveDirection = Movement.getDirection(event.keyCode);
-
-    if(moveDirection) {
-      const destination = newDungeonState[x + moveDirection.x][y + moveDirection.y];
-      const newCoords = { x: x + moveDirection.x, y: y + moveDirection.y };
-      let newPlayerState;
-      if(destination.enemy) {
-        this.setState(Object.assign(
-          {},
-          this.state,
-          Combat.attack(newCoords.x, newCoords.y, destination.enemy, this.state.player, this.state.dungeonMap)
-        ));
-      } else if(destination.tile !== 2) {
-        if(destination.tile === 'item' || destination.tile === 'health') {
-          newPlayerState = Movement.pickUpItem(this.state.player, destination.tile);
-
-        }
-        newDungeonState[x][y].tile =1
-        newDungeonState[newCoords.x][newCoords.y].tile ='player'
-         newPlayerState = Object.assign(
-          {},
-          this.state.player,
-          newPlayerState,
-          {location: {
-            x: newCoords.x,
-            y: newCoords.y
-          }
-        });
-        this.setState({
-          dungeonMap: newDungeonState,
-          player: newPlayerState
-        });
-      }
-    }
-
+    const newState = Object.assign(this.state, player.makeMove(event.keyCode,  this.state.player, this.state.dungeonMap));
+    this.setState(newState);
   }
 
   gameOver() {
