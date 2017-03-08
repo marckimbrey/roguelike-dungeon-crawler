@@ -1,3 +1,5 @@
+import combat from './combat';
+
 const player = (function() {
 
   function newPlayer() {
@@ -32,7 +34,12 @@ const player = (function() {
       const destination = newDungeonState[x + direction.x][y + direction.y];
       const newCoords = { x: x + direction.x, y: y + direction.y };
       if(destination.enemy) {
-        // combat.attack(player, destination.enemy)
+        const newEnemy = combat.attack(player, destination.enemy);
+        newDungeonState[x + direction.x][y + direction.y].enemy = newEnemy;
+        console.log(newEnemy);
+        if (!newEnemy) {
+          //newDungeonState[x + direction.x][y + direction.y].tile = 1;
+        }
       } else if(destination.tile !== 2) {
         if(destination.tile === 'item' || destination.tile === 'health') {
           newPlayerState = _pickUpItem(player, destination.tile);
