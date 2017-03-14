@@ -39,7 +39,9 @@ class App extends Component {
     this.state.dungeonMap.filter((row) => {
       row.filter((row) => {
         if(row.enemy) {
-          enemy.takeTurn(this.state.dungeonMap, this.state.player, row.enemy)
+          console.log(enemy.location);
+          const newState = Object.assign(this.state, enemy.takeTurn(this.state.dungeonMap, this.state.player, row.enemy));
+          this.setState(newState);
         }
       })
     })

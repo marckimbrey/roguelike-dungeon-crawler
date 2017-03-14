@@ -58,39 +58,49 @@ export default class extends Component {
     ctx.clearRect(0,0, 900, 900);
     visableGrid.forEach((row, x) => {
       row.forEach((sqr, y)=> {
-        if(sqr.tile === 1) {
-          //ctx.fillStyle = "brown";
-          //ctx.fillRect(x * 60, y*60, 60, 60);
+        if(this.isFloor(sqr.tile)) {
          ctx.drawImage(this.tile, 32, 16, 16, 16, x * 60, y*60, 60, 60);
         } else if (sqr.tile === 2) {
-          ctx.fillStyle = "grey";
-          ctx.fillRect(x * 60, y*60, 60, 60);
           ctx.drawImage(this.tile, 48, 0, 16, 16, x * 60, y*60, 60, 60);
-        } else if (sqr.tile === 'enemy1'){
-          ctx.fillStyle = "blue";
-          ctx.fillRect(x * 60, y*60, 60, 60);
-        }else if (sqr.tile === 'enemy2'){
-          ctx.fillStyle = "green";
-          ctx.fillRect(x * 60, y*60, 60, 60);
-        } else if (sqr.tile === 'player'){
-          ctx.fillStyle = "yellow";
-          ctx.fillRect(x * 60, y*60, 60, 60);
-          ctx.drawImage(this.character, 48, 0, 16, 16, x * 60, y*60, 60, 60);
-        } else if (sqr.tile === 'boss'){
-          ctx.fillStyle = "pink";
-          ctx.fillRect(x * 60, y*60, 60, 60);
-        }  else if (sqr.tile === 'health'){
-          ctx.fillStyle = "red";
-          ctx.fillRect(x * 60, y*60, 60, 60);
-        }  else if (sqr.tile === 'item'){
-          ctx.fillStyle = "silver";
-          ctx.fillRect(x * 60, y*60, 60, 60);
         } else {
           ctx.fillStyle = '#222';
           ctx.fillRect(x * 60, y*60, 60, 60);
         }
+
+        if (sqr.tile === 'enemy'){
+         ctx.drawImage(this.character, 0, 64, 16, 16, x * 60, y*60, 60, 60);
+       }else if (sqr.tile === 'enemy2'){
+         ctx.drawImage(this.character, 16*6, 64, 16, 16, x * 60, y*60, 60, 60);
+       } else if (sqr.tile === 'player'){
+         ctx.drawImage(this.character, 48, 0, 16, 16, x * 60, y*60, 60, 60);
+       } else if (sqr.tile === 'boss'){
+         ctx.drawImage(this.character, 144, 0, 16, 16, x * 60, y*60, 60, 60);
+       }  else if (sqr.tile === 'health'){
+         ctx.fillStyle = "red";
+         ctx.fillRect(x * 60, y*60, 60, 60);
+       }  else if (sqr.tile === 'item'){
+         ctx.fillStyle = "silver";
+         ctx.fillRect(x * 60, y*60, 60, 60);
+       }
+
+       if(sqr.enemy) {
+                  ctx.drawImage(this.character, 0, 64, 16, 16, x * 60, y*60, 60, 60);
+       }
       });
     });
+  }
+
+  isFloor(tile) {
+    const floorTile = [1, 'player', 'enemy1', 'enemy2',
+      'boss', 'health', 'item'
+    ];
+    let isFloor = false;
+    floorTile.forEach((x) =>{
+      if(x === tile) {
+        isFloor = true;
+      }
+    });
+    return isFloor;
   }
 
   render() {

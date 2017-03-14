@@ -19,20 +19,62 @@ let enemy = (function() {
   function takeTurn(dungeonMap, player,enemy) {
 
     // if !_nearPlayer return
-    if (_nearPlayer(enemy.location, player.location)) {
-      console.log('near player', enemy.location, player.location)
-    }
+    if (!_nearPlayer(enemy.location, player.location)) return;
 
     // move towards player or attack
-
+    return _move(dungeonMap, player,enemy)
     // return newState;
 
 
   }
 
-  function _move() {
+  function _move(dungeonMap, player,enemy) {
+    if (_canAttack(player.location,enemy.location)) {
+      console.log('can attack');
+    }
+    // get possible moves
+    const newMove =_possibleMoves(dungeonMap, player.location, enemy.location)
+    // make move
+    console.log(newMove)
+    if(newMove) {
+      //console.log(dungeonMap[enemy.location.x][enemy.location.y])
+      dungeonMap[enemy.location.x][enemy.location.y].enemy = false;
+      dungeonMap[newMove.x][newMove.y].enemy = enemy;
+      dungeonMap[newMove.x][newMove.y].enemy.location = newMove;
+    }
+    return {dungeonMap: dungeonMap, player: player};
+
 
   }
+
+  function _possibleMoves(dungeonMap, player, enemy) {
+    let possibleMoves;
+    let enemyX = enemy;
+    let enemyY = enemy;
+    if (enemyX.x !== player.x) {
+      if(player.x > enemyX.x) enemyX.x++;
+      else enemyX.x--;
+      if(dungeonMap[enemyX.x][enemyX.y].tile === 1) possibleMoves =enemyX
+    } else if (enemyY.y !== player.y) {
+
+      if(enemyY.y > player.y) enemyY.y--;
+      else enemyY.y++;
+      if(dungeonMap[enemyY.x][enemyY.y].tile === 1) possibleMoves = enemyY;
+    }
+
+    return possibleMoves;
+
+  }
+
+  function _canAttack(player, enemy) {
+    if ((player.x - enemy.x === 0) && (player.y - enemy.y === -1 || player.y - enemy.y === 1)) {
+      return true;
+    } else if ((player.y - enemy.y === 0) && (player.x - enemy.x === -1 || player.x - enemy.x === 1)) {
+      return true;
+    }
+
+    return false;
+  };
 
 
   function _nearPlayer(curLocation, playerLocation) {

@@ -67,13 +67,13 @@ let dungeon = (function(){
         newVal = fillRoom(room);
       }
       if (newVal.type === 'boss' || newVal.type === 'enemy1'|| newVal.type === 'enemy2') {
-          let newEnemy = new enemy();
-          newEnemy.createEnemy(newVal);
+          let newEnemy = new enemy.createEnemy(newVal);
           enemies.push(newEnemy);
+
+          dungeonMap[newVal.x][newVal.y].enemy = newEnemy;
       }
       dungeonMap[newVal.x][newVal.y].tile = newVal.type;
     });
-    console.log(enemies);
     return dungeonMap;
   }
 
