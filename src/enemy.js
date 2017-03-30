@@ -1,6 +1,11 @@
-let enemy = (function() {
+let enemy = {
+  health: 0,
+  attack: 0,
+  directionFacing: 'south',
+  type: null,
+  location: {x: 0, y: 0},
 
-  function createEnemy (newEnemy)  {
+  createEnemy: function(newEnemy)  {
             if (newEnemy.type === 'enemy1') {
               this.health = 20;
               this.attack = 6;
@@ -11,62 +16,69 @@ let enemy = (function() {
               this.health = 80;
               this.attack = 12;
             }
+            this.type = newEnemy.type;
             this.directionFacing = 'south';
             this.location = {x: newEnemy.x, y: newEnemy.y}
 
-  }
-
-  function takeTurn(dungeonMap, player,enemy) {
-
+  },
+  takeTurn: function(dungeonMap, player, enemy) {
     // if !_nearPlayer return
-    if (!_nearPlayer(enemy.location, player.location)) return;
-
+    if (!this._nearPlayer(enemy.location, player.location)) return null;
     // move towards player or attack
-    return _move(dungeonMap, player,enemy)
+    const newState = this._move(dungeonMap, player,enemy)
     // return newState;
+    return newState;
 
-
-  }
-
-  function _move(dungeonMap, player,enemy) {
-    if (_canAttack(player.location,enemy.location)) {
+  },
+  _move: function(dungeonMap, player,enemy) {
+    if (this._canAttack(player.location,enemy.location)) {
       console.log('can attack');
+      return
     }
     // get possible moves
-    const newMove =_possibleMoves(dungeonMap, player.location, enemy.location)
+
+    const newMove = this._possibleMoves(dungeonMap, player.location, enemy.location);
+    let newDungeonMap = dungeonMap;
     // make move
-    console.log(newMove)
+
     if(newMove) {
-      //console.log(dungeonMap[enemy.location.x][enemy.location.y])
-      dungeonMap[enemy.location.x][enemy.location.y].enemy = false;
-      dungeonMap[newMove.x][newMove.y].enemy = enemy;
-      dungeonMap[newMove.x][newMove.y].enemy.location = newMove;
+      newDungeonMap[enemy.location.x][enemy.location.y].enemy = false;
+      //console.log(newDungeonMap[enemy.location.x][enemy.location.y].enemy)
+      newDungeonMap[enemy.location.x][enemy.location.y].tile = 1;
+
+
+      newDungeonMap[newMove.x][newMove.y].enemy = enemy;
+      newDungeonMap[newMove.x][newMove.y].enemy.location = newMove;
+      newDungeonMap[newMove.x][newMove.y].tile = enemy.type;
+
+      //console.log('new tile', newDungeonMap[newMove.x][newMove.y].tile)
     }
-    return {dungeonMap: dungeonMap, player: player};
+    return {dungeonMap: newDungeonMap, player: player};
 
 
-  }
+  },
 
-  function _possibleMoves(dungeonMap, player, enemy) {
+
+  _possibleMoves: function(dungeonMap, player, enemy) {
     let possibleMoves;
-    let enemyX = enemy;
-    let enemyY = enemy;
-    if (enemyX.x !== player.x) {
-      if(player.x > enemyX.x) enemyX.x++;
-      else enemyX.x--;
-      if(dungeonMap[enemyX.x][enemyX.y].tile === 1) possibleMoves =enemyX
+    let enemyX = enemy.x;
+    let enemyY = enemy.y;
+    if (enemyX !== player.x) {
+      if(player.x > enemyX) enemyX++;
+      else enemyX--;
     } else if (enemyY.y !== player.y) {
 
-      if(enemyY.y > player.y) enemyY.y--;
-      else enemyY.y++;
-      if(dungeonMap[enemyY.x][enemyY.y].tile === 1) possibleMoves = enemyY;
+      if(enemyY > player.y) enemyY--;
+      else enemyY++;
+
     }
+          if(dungeonMap[enemyX][enemyY].tile === 1) possibleMoves = {x:enemyX, y:enemyY};
 
     return possibleMoves;
 
-  }
+  },
 
-  function _canAttack(player, enemy) {
+  _canAttack: function(player, enemy) {
     if ((player.x - enemy.x === 0) && (player.y - enemy.y === -1 || player.y - enemy.y === 1)) {
       return true;
     } else if ((player.y - enemy.y === 0) && (player.x - enemy.x === -1 || player.x - enemy.x === 1)) {
@@ -74,10 +86,10 @@ let enemy = (function() {
     }
 
     return false;
-  };
+  },
 
 
-  function _nearPlayer(curLocation, playerLocation) {
+  _nearPlayer: function(curLocation, playerLocation) {
     let nearPlayer = false;
     // check x + or - 7
     if (curLocation.x - playerLocation.x >= -7 && curLocation.x - playerLocation.x <=7 ) {
@@ -86,7 +98,7 @@ let enemy = (function() {
         nearPlayer = true;
       }
     }
-
+    console.log('near player: ' + nearPlayer)
     return nearPlayer;
 
 
@@ -96,11 +108,7 @@ let enemy = (function() {
 
   }
 
-  return ({
-    createEnemy,
-    takeTurn
-  });
-})()
+  };
 
 
 export default enemy;
