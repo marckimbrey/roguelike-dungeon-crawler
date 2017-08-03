@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
 import tiles from '../assets/basictiles.png';
 import characters from '../assets/characters.png';
-// 1.5 = tile
-// 2 = wall
-// 3 = enemy
-// 4 = enemy2
-// 5 = item
+
 export default class extends Component {
   constructor(props) {
     super();
@@ -31,6 +27,7 @@ export default class extends Component {
     this.updateCanvas(this.props.dungeonMap, this.props.playerLocation);
   }
   updateCanvas(grid, playerLocation) {
+
 
     let visableGrid = grid.filter((row, x) => {
       if (playerLocation.x -7 < 0) {
@@ -67,7 +64,7 @@ export default class extends Component {
           ctx.fillRect(x * 60, y*60, 60, 60);
         }
 
-        if (sqr.tile === 'enemy'){
+        if (sqr.tile === 'enemy1'){
          ctx.drawImage(this.character, 0, 64, 16, 16, x * 60, y*60, 60, 60);
        }else if (sqr.tile === 'enemy2'){
          ctx.drawImage(this.character, 16*6, 64, 16, 16, x * 60, y*60, 60, 60);
@@ -83,9 +80,7 @@ export default class extends Component {
          ctx.fillRect(x * 60, y*60, 60, 60);
        }
 
-       if(sqr.enemy) {
-                  ctx.drawImage(this.character, 0, 64, 16, 16, x * 60, y*60, 60, 60);
-       }
+
       });
     });
   }

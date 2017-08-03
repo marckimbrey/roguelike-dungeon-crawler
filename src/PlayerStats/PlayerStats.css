@@ -1,0 +1,17 @@
+.playerStats {
+  flex-direction: column;
+  background: #abc;
+
+}
+
+.playerStats div {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+  padding: 0 25%;
+  font-size: 1.25em;
+}
+
+.stat-title {
+  font-weight: bold;
+}

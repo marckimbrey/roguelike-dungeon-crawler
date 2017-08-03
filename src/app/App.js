@@ -19,7 +19,7 @@ class App extends Component {
 
     this.state  = {
       dungeonMap: dungeonMap,
-      player:newPlayer,
+      player: newPlayer,
       enemies: dungeon.enemies
     }
     this.onArrowKeyPress = this.onArrowKeyPress.bind(this);
@@ -27,21 +27,29 @@ class App extends Component {
   }
   componentDidMount() {
     window.addEventListener("keydown", this.onArrowKeyPress);
-    setInterval(this.enemiesTurn, 5000);
+    setInterval(this.enemiesTurn, 1000);
   }
 
+
   onArrowKeyPress(event) {
+
     const newState = Object.assign(this.state, player.makeMove(event.keyCode,  this.state.player, this.state.dungeonMap));
     this.setState(newState);
   }
 
   enemiesTurn() {
-    this.state.dungeonMap.filter((row) => {
-      row.filter((row) => {
-        if(row.enemy) {
-          console.log(enemy.location);
-          const newState = Object.assign(this.state, enemy.takeTurn(this.state.dungeonMap, this.state.player, row.enemy));
-          this.setState(newState);
+
+    this.state.dungeonMap.filter((row, x) => {
+      row.filter((sqr, y) => {
+
+        if(sqr.enemy) {
+          //console.log(sqr.enemy)
+          const enemyTurn = enemy.takeTurn(this.state.dungeonMap, this.state.player, sqr.enemy);
+          //console.log(this.state.dungeonMap[sqr.enemy.location.x][sqr.enemy.location.y]);
+          const newState = Object.assign({}, this.state, enemyTurn );
+          if (enemyTurn) {
+            this.setState(newState);
+          }
         }
       })
     })
@@ -58,9 +66,7 @@ class App extends Component {
           playerLocation={this.state.player.location}
 
         />
-        <div>
-          <PlayerStats player={this.state.player}/>
-        </div>
+        <PlayerStats player={this.state.player}/>
       </div>
     );
   }
