@@ -30,6 +30,13 @@ class App extends Component {
     setInterval(this.enemiesTurn, 1000);
   }
 
+  componentDidUpdate() {
+    if (this.state.player.health <= 0) {
+      clearInterval(this.enemiesTurn);
+      console.log('You have died, game over!!!');
+    }
+  }
+
 
   onArrowKeyPress(event) {
 
@@ -41,12 +48,12 @@ class App extends Component {
 
     this.state.dungeonMap.filter((row, x) => {
       row.filter((sqr, y) => {
-
-        if(sqr.enemy) {
+        if(sqr.enemy && this.state.player.health > 0) {
           //console.log(sqr.enemy)
           const enemyTurn = enemy.takeTurn(this.state.dungeonMap, this.state.player, sqr.enemy);
           //console.log(this.state.dungeonMap[sqr.enemy.location.x][sqr.enemy.location.y]);
           const newState = Object.assign({}, this.state, enemyTurn );
+
           if (enemyTurn) {
             this.setState(newState);
           }

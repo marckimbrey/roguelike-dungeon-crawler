@@ -1,3 +1,5 @@
+import combat from './combat';
+
 let enemy = {
   health: 0,
   attack: 0,
@@ -32,8 +34,8 @@ let enemy = {
   },
   _move: function(dungeonMap, player,enemy) {
     if (this._canAttack(player.location,enemy.location)) {
-      console.log('can attack');
-      return
+      const newPlayerState = combat.attack(enemy, player);
+      return {dungeonMap: dungeonMap, player: newPlayerState}
     }
     // get possible moves
 
@@ -98,7 +100,7 @@ let enemy = {
         nearPlayer = true;
       }
     }
-    console.log('near player: ' + nearPlayer)
+    // console.log('near player: ' + nearPlayer)
     return nearPlayer;
 
 

@@ -25,15 +25,14 @@ const combat = (function() {
 
   function attack(att, def) {
     const damage =(att.weapon)?  _calculateDamage(att.attack + att.weapon.attack): _calculateDamage(att.attack);
-    console.log(def);
     def.health -= damage;
-    return (_defKilled(def))? null: def;
+    return  def;
 
   }
 
-  function _defKilled(def) {
-    if (def.health <= 0) return true;
-  }
+  // function _defKilled(health) {
+  //   if (health <= 0) return true;
+  // }
 
   function _addExerience(player, exp) {
     player.experience += exp;

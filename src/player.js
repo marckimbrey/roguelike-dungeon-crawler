@@ -34,9 +34,15 @@ const player = (function() {
       const destination = newDungeonState[x + direction.x][y + direction.y];
       const newCoords = { x: x + direction.x, y: y + direction.y };
       if(destination.enemy) {
+        // attack enemy
         const newEnemy = combat.attack(player, destination.enemy);
-        newDungeonState[x + direction.x][y + direction.y].enemy = newEnemy;
-        console.log(newEnemy);
+
+        if (newEnemy.health <= 0) { // if enemy has been killed
+          newDungeonState[x + direction.x][y + direction.y].enemy = null
+        } else { // set enemy new health
+          newDungeonState[x + direction.x][y + direction.y].enemy = newEnemy;
+        }
+
         if (!newEnemy) {
           //newDungeonState[x + direction.x][y + direction.y].tile = 1;
         }
