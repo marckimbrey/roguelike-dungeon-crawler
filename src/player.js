@@ -7,7 +7,7 @@ const player = (function() {
     this.experience = 0;
     this.health = 60;
     this.attack = 5;
-    this.directionFacing = 'south';
+    this.facing = 'down';
     this.weapon = {
       name: 'hands',
       attack: 5
@@ -33,6 +33,8 @@ const player = (function() {
     if(direction) {
       const destination = newDungeonState[x + direction.x][y + direction.y];
       const newCoords = { x: x + direction.x, y: y + direction.y };
+      // get direction player is facing
+      newPlayerState.facing =  _getfacing(player.facing, direction);
       if(destination.enemy) {
         // attack enemy
         const newEnemy = combat.attack(player, destination.enemy);
@@ -93,6 +95,21 @@ const player = (function() {
           break;
     }
     return direction
+  }
+
+  function _getfacing(curDir, dest) {
+    let nextDir
+    if (dest.x === 1) { // right
+      nextDir = (curDir === 'right')? 'right2': 'right';
+    } else if (dest.x === -1) { // left
+      nextDir = (curDir === 'left')? 'left2': 'left';
+    } else if (dest.y === -1) { // up
+      nextDir = (curDir === 'up')? 'up2': 'up';
+    } else if (dest.y === 1) { // down
+      nextDir = (curDir === 'down')? 'down2': 'down';
+    }
+
+    return nextDir;
   }
 
   function _pickUpItem(player, itemType) {

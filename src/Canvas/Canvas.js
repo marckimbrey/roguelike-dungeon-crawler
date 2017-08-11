@@ -51,7 +51,7 @@ export default class extends Component {
     });
 
     const ctx = this.refs.canvas.getContext('2d');
-
+    let charImg;
     ctx.clearRect(0,0, 900, 900);
     visableGrid.forEach((row, x) => {
       row.forEach((sqr, y)=> {
@@ -69,7 +69,8 @@ export default class extends Component {
        }else if (sqr.tile === 'enemy2'){
          ctx.drawImage(this.character, 16*6, 64, 16, 16, x * 60, y*60, 60, 60);
        } else if (sqr.tile === 'player'){
-         ctx.drawImage(this.character, 48, 0, 16, 16, x * 60, y*60, 60, 60);
+         charImg = this.getCharImg('player', this.props.playerDirection)
+         ctx.drawImage(this.character, charImg.x, charImg.y, 16, 16, x * 60, y*60, 60, 60);
        } else if (sqr.tile === 'boss'){
          ctx.drawImage(this.character, 144, 0, 16, 16, x * 60, y*60, 60, 60);
        }  else if (sqr.tile === 'health'){
@@ -97,6 +98,29 @@ export default class extends Component {
     });
     return isFloor;
   }
+
+  getCharImg(char, facing) {
+    let imgPos;
+    const player = {
+      'up': {x : 48, y : 48},
+      'up2': {x : 80, y : 48},
+      'right': {x : 48, y : 32},
+      'right2': {x : 80, y : 32},
+      'down': {x : 48, y : 0},
+      'down2': {x : 80, y : 0},
+      'left': {x : 48, y : 16},
+      'left2': {x : 80, y : 16},
+    }
+
+    switch(char)  {
+      case 'player':
+        imgPos = player[facing];
+    }
+
+    return imgPos;
+
+  }
+
 
   render() {
     return (<canvas ref="canvas" height={900} width={900}></canvas>)

@@ -41,6 +41,7 @@ class App extends Component {
   onArrowKeyPress(event) {
 
     const newState = Object.assign(this.state, player.makeMove(event.keyCode,  this.state.player, this.state.dungeonMap));
+    console.log(this.state.player.facing)
     this.setState(newState);
   }
 
@@ -71,6 +72,7 @@ class App extends Component {
         <Canvas
           dungeonMap={this.state.dungeonMap}
           playerLocation={this.state.player.location}
+          playerDirection={this.state.player.facing}
 
         />
         <PlayerStats player={this.state.player}/>

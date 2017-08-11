@@ -3,7 +3,7 @@ import combat from './combat';
 let enemy = {
   health: 0,
   attack: 0,
-  directionFacing: 'south',
+  facing: 'south',
   type: null,
   location: {x: 0, y: 0},
 
@@ -19,7 +19,7 @@ let enemy = {
               this.attack = 12;
             }
             this.type = newEnemy.type;
-            this.directionFacing = 'south';
+            this.facing = 'south';
             this.location = {x: newEnemy.x, y: newEnemy.y}
 
   },
