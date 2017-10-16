@@ -65,14 +65,17 @@ export default class extends Component {
         }
 
         if (sqr.tile === 'enemy1'){
-         ctx.drawImage(this.character, 0, 64, 16, 16, x * 60, y*60, 60, 60);
+          charImg = this.getCharImg(sqr.enemy.type, sqr.enemy.facing);
+         ctx.drawImage(this.character, charImg.x, charImg.y, 16, 16, x * 60, y*60, 60, 60);
        }else if (sqr.tile === 'enemy2'){
-         ctx.drawImage(this.character, 16*6, 64, 16, 16, x * 60, y*60, 60, 60);
+         charImg = this.getCharImg(sqr.enemy.type, sqr.enemy.facing);
+         ctx.drawImage(this.character, charImg.x, charImg.y, 16, 16, x * 60, y*60, 60, 60);
        } else if (sqr.tile === 'player'){
          charImg = this.getCharImg('player', this.props.playerDirection)
          ctx.drawImage(this.character, charImg.x, charImg.y, 16, 16, x * 60, y*60, 60, 60);
        } else if (sqr.tile === 'boss'){
-         ctx.drawImage(this.character, 144, 0, 16, 16, x * 60, y*60, 60, 60);
+         charImg = this.getCharImg(sqr.enemy.type, sqr.enemy.facing);
+         ctx.drawImage(this.character, charImg.x, charImg.y, 16, 16, x * 60, y*60, 60, 60);
        }  else if (sqr.tile === 'health'){
          ctx.fillStyle = "red";
          ctx.fillRect(x * 60, y*60, 60, 60);
@@ -110,11 +113,53 @@ export default class extends Component {
       'down2': {x : 80, y : 0},
       'left': {x : 48, y : 16},
       'left2': {x : 80, y : 16},
-    }
+    };
 
+    const boss ={
+      'up': {x : 144, y : 48},
+      'up2': {x : 176, y : 48},
+      'right': {x : 144, y : 32},
+      'right2': {x : 176, y : 32},
+      'down': {x : 144, y : 0},
+      'down2': {x : 176, y : 0},
+      'left': {x : 144, y : 16},
+      'left2': {x : 176, y : 16},
+    };
+
+    const enemy1 = {
+      'up': {x : 0, y : 112},
+      'up2': {x : 32, y : 112},
+      'right': {x : 0, y : 96},
+      'right2': {x : 32, y : 96},
+      'down': {x : 0, y : 64},
+      'down2': {x : 32, y : 64},
+      'left': {x : 0, y : 80},
+      'left2': {x : 32, y : 80},
+    };
+
+    const enemy2 ={
+      'up': {x : 96, y : 112},
+      'up2': {x : 128, y : 112},
+      'right': {x : 96, y : 96},
+      'right2': {x : 128, y : 96},
+      'down': {x : 96, y : 64},
+      'down2': {x : 128, y : 64},
+      'left': {x : 96, y : 80},
+      'left2': {x : 128, y : 80},
+    };
     switch(char)  {
       case 'player':
         imgPos = player[facing];
+        break;
+      case 'boss':
+        imgPos = boss[facing];;
+        break
+      case 'enemy1':
+        imgPos = enemy1[facing];
+        break;
+      case 'enemy2':
+        imgPos = enemy2[facing];
+        break;
     }
 
     return imgPos;

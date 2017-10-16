@@ -41,7 +41,6 @@ class App extends Component {
   onArrowKeyPress(event) {
 
     const newState = Object.assign(this.state, player.makeMove(event.keyCode,  this.state.player, this.state.dungeonMap));
-    console.log(this.state.player.facing)
     this.setState(newState);
   }
 

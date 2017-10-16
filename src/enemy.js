@@ -3,7 +3,7 @@ import combat from './combat';
 let enemy = {
   health: 0,
   attack: 0,
-  facing: 'south',
+  facing: 'down',
   type: null,
   location: {x: 0, y: 0},
 
@@ -19,7 +19,7 @@ let enemy = {
               this.attack = 12;
             }
             this.type = newEnemy.type;
-            this.facing = 'south';
+            this.facing = 'down';
             this.location = {x: newEnemy.x, y: newEnemy.y}
 
   },
@@ -44,16 +44,18 @@ let enemy = {
     // make move
 
     if(newMove) {
+
+      // reset current location
       newDungeonMap[enemy.location.x][enemy.location.y].enemy = false;
-      //console.log(newDungeonMap[enemy.location.x][enemy.location.y].enemy)
       newDungeonMap[enemy.location.x][enemy.location.y].tile = 1;
 
-
+      // set destination
+      enemy.facing = this._dirFacing(enemy.facing ,enemy.location, newMove);;
       newDungeonMap[newMove.x][newMove.y].enemy = enemy;
       newDungeonMap[newMove.x][newMove.y].enemy.location = newMove;
       newDungeonMap[newMove.x][newMove.y].tile = enemy.type;
 
-      //console.log('new tile', newDungeonMap[newMove.x][newMove.y].tile)
+
     }
     return {dungeonMap: newDungeonMap, player: player};
 
@@ -74,10 +76,24 @@ let enemy = {
       else enemyY++;
 
     }
-          if(dungeonMap[enemyX][enemyY].tile === 1) possibleMoves = {x:enemyX, y:enemyY};
+    if(dungeonMap[enemyX][enemyY].tile === 1) possibleMoves = {x:enemyX, y:enemyY};
 
     return possibleMoves;
 
+  },
+
+  _dirFacing: function(curFacing, curLocation, newLocation) {
+    let dirFacing;
+    if (curLocation.x > newLocation.x) {
+      dirFacing = (curFacing === 'left')? 'left2': 'left';
+    } else if (curLocation.x < newLocation.x) {
+      dirFacing = (curFacing === 'right')? 'right2': 'right';
+    } else if (curLocation.y > newLocation.y) {
+      dirFacing = (curFacing === 'up')? 'up2': 'up';
+    }else if (curLocation.y < newLocation.y) {
+      dirFacing = (curFacing === 'down')? 'down2': 'down';
+    }
+    return dirFacing;
   },
 
   _canAttack: function(player, enemy) {
