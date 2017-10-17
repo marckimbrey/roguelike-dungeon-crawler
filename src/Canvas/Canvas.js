@@ -63,25 +63,22 @@ export default class extends Component {
           ctx.fillStyle = '#222';
           ctx.fillRect(x * 60, y*60, 60, 60);
         }
-
-        if (sqr.tile === 'enemy1'){
-          charImg = this.getCharImg(sqr.enemy.type, sqr.enemy.facing);
-         ctx.drawImage(this.character, charImg.x, charImg.y, 16, 16, x * 60, y*60, 60, 60);
-       }else if (sqr.tile === 'enemy2'){
-         charImg = this.getCharImg(sqr.enemy.type, sqr.enemy.facing);
-         ctx.drawImage(this.character, charImg.x, charImg.y, 16, 16, x * 60, y*60, 60, 60);
-       } else if (sqr.tile === 'player'){
-         charImg = this.getCharImg('player', this.props.playerDirection)
-         ctx.drawImage(this.character, charImg.x, charImg.y, 16, 16, x * 60, y*60, 60, 60);
-       } else if (sqr.tile === 'boss'){
-         charImg = this.getCharImg(sqr.enemy.type, sqr.enemy.facing);
-         ctx.drawImage(this.character, charImg.x, charImg.y, 16, 16, x * 60, y*60, 60, 60);
-       }  else if (sqr.tile === 'health'){
-         ctx.fillStyle = "red";
-         ctx.fillRect(x * 60, y*60, 60, 60);
-       }  else if (sqr.tile === 'item'){
-         ctx.fillStyle = "silver";
-         ctx.fillRect(x * 60, y*60, 60, 60);
+        if (sqr.enemy) {
+          if (sqr.tile === 'enemy1'){
+            charImg = this.getCharImg(sqr.enemy.type, sqr.enemy.facing);
+           ctx.drawImage(this.character, charImg.x, charImg.y, 16, 16, x * 60, y*60, 60, 60);
+         }  else if (sqr.tile === 'enemy2'){
+           charImg = this.getCharImg(sqr.enemy.type, sqr.enemy.facing);
+           ctx.drawImage(this.character, charImg.x, charImg.y, 16, 16, x * 60, y*60, 60, 60);
+         }  else if (sqr.tile === 'boss'){
+           charImg = this.getCharImg(sqr.enemy.type, sqr.enemy.facing);
+           ctx.drawImage(this.character, charImg.x, charImg.y, 16, 16, x * 60, y*60, 60, 60);
+         }
+        } else if (sqr.tile === 'player'){
+          charImg = this.getCharImg('player', this.props.playerDirection)
+          ctx.drawImage(this.character, charImg.x, charImg.y, 16, 16, x * 60, y*60, 60, 60);
+        } else if (sqr.tile === 'item' || sqr.tile === 'health'){
+         ctx.drawImage(this.tile, 64, 64, 16, 16, x * 60, y*60, 60, 60);
        }
 
 

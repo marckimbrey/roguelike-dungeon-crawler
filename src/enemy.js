@@ -70,7 +70,7 @@ let enemy = {
     if (enemyX !== player.x) {
       if(player.x > enemyX) enemyX++;
       else enemyX--;
-    } else if (enemyY.y !== player.y) {
+    } else if (enemyY !== player.y) {
 
       if(enemyY > player.y) enemyY--;
       else enemyY++;

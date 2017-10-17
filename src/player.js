@@ -38,20 +38,17 @@ const player = (function() {
       if(destination.enemy) {
         // attack enemy
         const newEnemy = combat.attack(player, destination.enemy);
-
+        // calculate experience
+        _addExperience(newPlayerState, destination.enemy.attack);
         if (newEnemy.health <= 0) { // if enemy has been killed
           newDungeonState[x + direction.x][y + direction.y].enemy = null
         } else { // set enemy new health
           newDungeonState[x + direction.x][y + direction.y].enemy = newEnemy;
         }
 
-        if (!newEnemy) {
-          //newDungeonState[x + direction.x][y + direction.y].tile = 1;
-        }
       } else if(destination.tile !== 2) {
         if(destination.tile === 'item' || destination.tile === 'health') {
           newPlayerState = _pickUpItem(player, destination.tile);
-
         }
         newDungeonState[x][y].tile =1
         newDungeonState[newCoords.x][newCoords.y].tile ='player';
@@ -67,7 +64,7 @@ const player = (function() {
       }
 
     }
-    //console.log(player.location, newPlayerState.location)
+
     return {
       dungeonMap: newDungeonState,
       player: newPlayerState
@@ -135,6 +132,19 @@ const player = (function() {
       }
     }
 
+    return player;
+  }
+
+  function _addExperience(player, exp) {
+    player.experience += exp;
+    if (player.level < Math.floor(player.experience / 15) +1) _addLevel(player);
+    return player
+  }
+
+  function _addLevel(player) {
+    player.level++;
+    player.attack += Math.round(Math.random() * 2);
+    player.health += Math.round(Math.random() * (player.health * 0.25))
     return player;
   }
 
