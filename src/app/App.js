@@ -14,7 +14,8 @@ class App extends Component {
 
     dungeon.generate();
     const dungeonMap = dungeon.dungeonMap;
-    const newPlayer = Object.assign(new player.newPlayer,{location: dungeon.playerLocation(dungeonMap)})
+    const newPlayer = Object.assign(new player.newPlayer,{location: dungeon.playerLocation(dungeonMap)});
+
 
 
     this.state  = {
@@ -24,6 +25,7 @@ class App extends Component {
     }
     this.onArrowKeyPress = this.onArrowKeyPress.bind(this);
     this.enemiesTurn = this.enemiesTurn.bind(this);
+    this.checkTime = 0;
   }
   componentDidMount() {
     window.addEventListener("keydown", this.onArrowKeyPress);
@@ -40,8 +42,18 @@ class App extends Component {
 
   onArrowKeyPress(event) {
 
-    const newState = Object.assign(this.state, player.makeMove(event.keyCode,  this.state.player, this.state.dungeonMap));
-    this.setState(newState);
+    var currentTime = new Date()
+    if((currentTime.getTime() -this.checkTime) > 150){
+      const newState = Object.assign(this.state, player.makeMove(event.keyCode,  this.state.player, this.state.dungeonMap));
+
+      this.checkTime =currentTime.getTime();
+      this.setState(newState);
+
+
+    }
+
+
+
   }
 
   enemiesTurn() {
