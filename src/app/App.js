@@ -4,6 +4,7 @@ import './App.css';
 import dungeon from '../dungeon';
 import Canvas from '../Canvas/Canvas';
 import PlayerStats from '../PlayerStats/PlayerStats';
+import EndGame from '../EndGame/EndGame'
 import Combat from '../combat';
 import player from '../player';
 import enemy from '../enemy';
@@ -21,7 +22,8 @@ class App extends Component {
     this.state  = {
       dungeonMap: dungeonMap,
       player: newPlayer,
-      enemies: dungeon.enemies
+      enemies: dungeon.enemies,
+      gameState: 'playing'
     }
     this.onArrowKeyPress = this.onArrowKeyPress.bind(this);
     this.enemiesTurn = this.enemiesTurn.bind(this);
@@ -29,21 +31,19 @@ class App extends Component {
   }
   componentDidMount() {
     window.addEventListener("keydown", this.onArrowKeyPress);
-    setInterval(this.enemiesTurn, 1000);
+    setInterval(this.enemiesTurn, 200);
   }
 
-  componentDidUpdate() {
-    if (this.state.player.health <= 0) {
-      clearInterval(this.enemiesTurn);
-      console.log('You have died, game over!!!');
-    }
+  componentWillUpdate() {
+
+     this.endGame();
   }
 
 
   onArrowKeyPress(event) {
 
     var currentTime = new Date()
-    if((currentTime.getTime() -this.checkTime) > 150){
+    if((currentTime.getTime() -this.checkTime) > 100 && this.state.gameState === 'playing'){
       const newState = Object.assign(this.state, player.makeMove(event.keyCode,  this.state.player, this.state.dungeonMap));
 
       this.checkTime =currentTime.getTime();
@@ -74,12 +74,25 @@ class App extends Component {
     })
   }
 
-  gameOver() {
-    alert('GAME OVER!!!');
+  endGame() {
+
+      // clearInterval(this.enemiesTurn);
+    if (this.state.gameState !== 'playing') {
+      console.log(this.state.gameState);
+      document.getElementsByClassName('endGame')[0].classList.add('gameOver');
+    }
+    let newGameState;
+    if (this.state.player.health <= 0 && this.state.gameState !== 'lost') {
+      newGameState = 'lost';
+
+      this.setState({gameState: newGameState})
+    }
   }
+
   render() {
     return (
       <div className="App">
+        <EndGame gameState={this.state.gameState} />
         <Canvas
           dungeonMap={this.state.dungeonMap}
           playerLocation={this.state.player.location}

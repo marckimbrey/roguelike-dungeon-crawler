@@ -30,6 +30,7 @@ const player = (function() {
     const y = player.location.y;
     let newDungeonState = dungeonMap;
     let newPlayerState = player;
+    let bossKilled = false;
     if(direction) {
       const destination = newDungeonState[x + direction.x][y + direction.y];
       const newCoords = { x: x + direction.x, y: y + direction.y };
@@ -41,6 +42,7 @@ const player = (function() {
         // calculate experience
         _addExperience(newPlayerState, destination.enemy.attack);
         if (newEnemy.health <= 0) { // if enemy has been killed
+          if(newEnemy.type === 'boss') bossKilled = true;
           newDungeonState[x + direction.x][y + direction.y].enemy = null
         } else { // set enemy new health
           newDungeonState[x + direction.x][y + direction.y].enemy = newEnemy;
@@ -67,7 +69,8 @@ const player = (function() {
 
     return {
       dungeonMap: newDungeonState,
-      player: newPlayerState
+      player: newPlayerState,
+      gameState: (bossKilled)? 'won': 'playing'
     };
   }
 

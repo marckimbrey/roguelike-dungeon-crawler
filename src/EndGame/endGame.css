@@ -1,0 +1,22 @@
+.endGame {
+  position: absolute;
+  height: 900px;
+  width: 1200px;
+  background: #222;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.endText {
+  margin: 0 auto;
+  color: #eee;
+  font-size: 3.5em;
+}
+
+.gameOver {
+  opacity:  1;
+}
