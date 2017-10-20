@@ -31,6 +31,7 @@ const player = (function() {
     let newDungeonState = dungeonMap;
     let newPlayerState = player;
     let bossKilled = false;
+
     if(direction) {
       const destination = newDungeonState[x + direction.x][y + direction.y];
       const newCoords = { x: x + direction.x, y: y + direction.y };
@@ -48,7 +49,7 @@ const player = (function() {
           newDungeonState[x + direction.x][y + direction.y].enemy = newEnemy;
         }
 
-      } else if(destination.tile !== 2) {
+      } else if(destination.tile !== 2) { // not wall or enemy
         if(destination.tile === 'item' || destination.tile === 'health') {
           newPlayerState = _pickUpItem(player, destination.tile);
         }

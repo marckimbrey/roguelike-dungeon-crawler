@@ -27,7 +27,9 @@ export default class extends Component {
     this.updateCanvas(this.props.dungeonMap, this.props.playerLocation);
   }
   updateCanvas(grid, playerLocation) {
-
+    const gridSize = 900;
+    const sqrSize = 60;
+    const srcSqr = 16;
 
     let visableGrid = grid.filter((row, x) => {
       if (playerLocation.x -7 < 0) {
@@ -52,33 +54,33 @@ export default class extends Component {
 
     const ctx = this.refs.canvas.getContext('2d');
     let charImg;
-    ctx.clearRect(0,0, 900, 900);
+    ctx.clearRect(0,0, gridSize, gridSize);
     visableGrid.forEach((row, x) => {
       row.forEach((sqr, y)=> {
-        if(this.isFloor(sqr.tile)) {
-         ctx.drawImage(this.tile, 32, 16, 16, 16, x * 60, y*60, 60, 60);
-        } else if (sqr.tile === 2) {
-          ctx.drawImage(this.tile, 48, 0, 16, 16, x * 60, y*60, 60, 60);
-        } else {
+        if(this.isFloor(sqr.tile)) { // dungeon floor
+         ctx.drawImage(this.tile, 32, 16, srcSqr, srcSqr, x*sqrSize, y*sqrSize, sqrSize, sqrSize);
+       } else if (sqr.tile === 2) { // walls of dungeon
+          ctx.drawImage(this.tile, 48, 0, srcSqr, srcSqr, x*sqrSize, y*sqrSize, sqrSize, sqrSize);
+        } else { // empty spaces outside the dungeon
           ctx.fillStyle = '#222';
-          ctx.fillRect(x * 60, y*60, 60, 60);
+          ctx.fillRect(x*sqrSize, y*sqrSize, sqrSize, sqrSize);
         }
         if (sqr.enemy) {
           if (sqr.tile === 'enemy1'){
             charImg = this.getCharImg(sqr.enemy.type, sqr.enemy.facing);
-           ctx.drawImage(this.character, charImg.x, charImg.y, 16, 16, x * 60, y*60, 60, 60);
+           ctx.drawImage(this.character, charImg.x, charImg.y, srcSqr, srcSqr, x*sqrSize, y*sqrSize, sqrSize, sqrSize);
          }  else if (sqr.tile === 'enemy2'){
            charImg = this.getCharImg(sqr.enemy.type, sqr.enemy.facing);
-           ctx.drawImage(this.character, charImg.x, charImg.y, 16, 16, x * 60, y*60, 60, 60);
+           ctx.drawImage(this.character, charImg.x, charImg.y, srcSqr, srcSqr, x*sqrSize, y*sqrSize, sqrSize, sqrSize);
          }  else if (sqr.tile === 'boss'){
            charImg = this.getCharImg(sqr.enemy.type, sqr.enemy.facing);
-           ctx.drawImage(this.character, charImg.x, charImg.y, 16, 16, x * 60, y*60, 60, 60);
+           ctx.drawImage(this.character, charImg.x, charImg.y, srcSqr, srcSqr, x*sqrSize, y*sqrSize, sqrSize, sqrSize);
          }
         } else if (sqr.tile === 'player'){
           charImg = this.getCharImg('player', this.props.playerDirection)
-          ctx.drawImage(this.character, charImg.x, charImg.y, 16, 16, x * 60, y*60, 60, 60);
+          ctx.drawImage(this.character, charImg.x, charImg.y, srcSqr, srcSqr, x*sqrSize, y*sqrSize, sqrSize, sqrSize);
         } else if (sqr.tile === 'item' || sqr.tile === 'health'){
-         ctx.drawImage(this.tile, 64, 64, 16, 16, x * 60, y*60, 60, 60);
+         ctx.drawImage(this.tile, 64, 64, srcSqr, srcSqr, x*sqrSize, y*sqrSize, sqrSize, sqrSize);
        }
 
 
@@ -156,6 +158,10 @@ export default class extends Component {
         break;
       case 'enemy2':
         imgPos = enemy2[facing];
+        break;
+      default:
+      console.log(char, facing);
+        imgPos= null;
         break;
     }
 

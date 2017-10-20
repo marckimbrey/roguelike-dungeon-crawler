@@ -9,7 +9,6 @@ export default (props) => {
       lost: 'YOU HAVE BEEN SLAIN!!!',
       playing: 'YOU SHOULD BR FIGHTING FOR YOUR LIFE WHY ARE YOU SEEING THIS!!'
   }
-  console.log(props.gameState);
 
   return (
     <div className="endGame">

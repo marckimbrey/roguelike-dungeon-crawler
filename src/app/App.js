@@ -5,7 +5,6 @@ import dungeon from '../dungeon';
 import Canvas from '../Canvas/Canvas';
 import PlayerStats from '../PlayerStats/PlayerStats';
 import EndGame from '../EndGame/EndGame'
-import Combat from '../combat';
 import player from '../player';
 import enemy from '../enemy';
 
@@ -41,7 +40,7 @@ class App extends Component {
 
 
   onArrowKeyPress(event) {
-
+    // checktime and currentTime used to prvent player from moving too quickly
     var currentTime = new Date()
     if((currentTime.getTime() -this.checkTime) > 100 && this.state.gameState === 'playing'){
       const newState = Object.assign(this.state, player.makeMove(event.keyCode,  this.state.player, this.state.dungeonMap));
@@ -61,9 +60,7 @@ class App extends Component {
     this.state.dungeonMap.filter((row, x) => {
       row.filter((sqr, y) => {
         if(sqr.enemy && this.state.player.health > 0) {
-          //console.log(sqr.enemy)
           const enemyTurn = enemy.takeTurn(this.state.dungeonMap, this.state.player, sqr.enemy);
-          //console.log(this.state.dungeonMap[sqr.enemy.location.x][sqr.enemy.location.y]);
           const newState = Object.assign({}, this.state, enemyTurn );
 
           if (enemyTurn) {
@@ -76,12 +73,12 @@ class App extends Component {
 
   endGame() {
 
-      // clearInterval(this.enemiesTurn);
-    if (this.state.gameState !== 'playing') {
-      console.log(this.state.gameState);
+
+    if (this.state.gameState !== 'playing') { // if game is over
       document.getElementsByClassName('endGame')[0].classList.add('gameOver');
     }
     let newGameState;
+    // gameState = 'win' is returned when player kills boss when attacking 
     if (this.state.player.health <= 0 && this.state.gameState !== 'lost') {
       newGameState = 'lost';
 

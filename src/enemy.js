@@ -38,13 +38,11 @@ let enemy = {
       return {dungeonMap: dungeonMap, player: newPlayerState}
     }
     // get possible moves
-
     const newMove = this._possibleMoves(dungeonMap, player.location, enemy.location);
     let newDungeonMap = dungeonMap;
+
     // make move
-
     if(newMove) {
-
       // reset current location
       newDungeonMap[enemy.location.x][enemy.location.y].enemy = false;
       newDungeonMap[enemy.location.x][enemy.location.y].tile = 1;
@@ -54,7 +52,6 @@ let enemy = {
       newDungeonMap[newMove.x][newMove.y].enemy = enemy;
       newDungeonMap[newMove.x][newMove.y].enemy.location = newMove;
       newDungeonMap[newMove.x][newMove.y].tile = enemy.type;
-
 
     }
     return {dungeonMap: newDungeonMap, player: player};
@@ -72,17 +69,20 @@ let enemy = {
       else enemyX--;
     } else if (enemyY !== player.y) {
 
-      if(enemyY > player.y) enemyY--;
+      if(player.y < enemyY) enemyY--;
       else enemyY++;
 
     }
-    if(dungeonMap[enemyX][enemyY].tile === 1) possibleMoves = {x:enemyX, y:enemyY};
+    if(dungeonMap[enemyX][enemyY].tile === 1) {
+     possibleMoves = {x:enemyX, y:enemyY};
+   }
 
     return possibleMoves;
 
   },
 
   _dirFacing: function(curFacing, curLocation, newLocation) {
+    // two options used to create movement animation
     let dirFacing;
     if (curLocation.x > newLocation.x) {
       dirFacing = (curFacing === 'left')? 'left2': 'left';
@@ -116,13 +116,8 @@ let enemy = {
         nearPlayer = true;
       }
     }
-    // console.log('near player: ' + nearPlayer)
+
     return nearPlayer;
-
-
-
-
-    // move
 
   }
 
