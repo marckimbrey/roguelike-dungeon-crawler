@@ -19,4 +19,5 @@
 
 .gameOver {
   display: flex;
+  display: -webkit-flex;
 }

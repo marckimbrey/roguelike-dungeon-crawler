@@ -1,5 +1,6 @@
 .App {
   display: flex;
+  display: -webkit-flex;
   text-align: center;
   max-width: 1200px;
   width:100%;
@@ -28,8 +29,10 @@
 }
 canvas {
   display: inline-flex;
+  display: -webkit-inline-flex;
 
 }
 .playerStats {
   display: inline-flex;
+  display: -webkit-inline-flex;
 }
