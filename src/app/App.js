@@ -4,7 +4,8 @@ import './App.css';
 import dungeon from '../dungeon';
 import Canvas from '../Canvas/Canvas';
 import PlayerStats from '../PlayerStats/PlayerStats';
-import EndGame from '../EndGame/EndGame'
+import MobileControls from '../MobileControls/MobileControls';
+import EndGame from '../EndGame/EndGame';
 import player from '../player';
 import enemy from '../enemy';
 
@@ -40,10 +41,11 @@ class App extends Component {
 
 
   onArrowKeyPress(event) {
+    let keycode = (event.keyCode)? event.keyCode : event;
     // checktime and currentTime used to prvent player from moving too quickly
     var currentTime = new Date()
     if((currentTime.getTime() -this.checkTime) > 100 && this.state.gameState === 'playing'){
-      const newState = Object.assign(this.state, player.makeMove(event.keyCode,  this.state.player, this.state.dungeonMap));
+      const newState = Object.assign(this.state, player.makeMove(keycode,  this.state.player, this.state.dungeonMap));
 
       this.checkTime =currentTime.getTime();
       this.setState(newState);
@@ -78,7 +80,7 @@ class App extends Component {
       document.getElementsByClassName('endGame')[0].classList.add('gameOver');
     }
     let newGameState;
-    // gameState = 'win' is returned when player kills boss when attacking 
+    // gameState = 'win' is returned when player kills boss when attacking
     if (this.state.player.health <= 0 && this.state.gameState !== 'lost') {
       newGameState = 'lost';
 
@@ -97,6 +99,7 @@ class App extends Component {
 
         />
         <PlayerStats player={this.state.player}/>
+        <MobileControls btnPressed={this.onArrowKeyPress} />
       </div>
     );
   }

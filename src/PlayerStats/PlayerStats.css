@@ -1,6 +1,7 @@
 .playerStats {
   flex-direction: column;
   background: #abc;
+  width: 20%;
 
 }
 

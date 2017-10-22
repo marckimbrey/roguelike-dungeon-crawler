@@ -1,0 +1,52 @@
+ .mobile-controls {
+   position: fixed;
+   bottom: 0;
+   width: 80%;
+   max-width: 900px;
+   height: 50%;
+   z-index: 1;
+   opacity: 0.6;
+
+   background: none;
+
+ }
+
+ .mobile-btn {
+   font-size: 2rem;
+   font-weight: bold;
+   position: absolute;
+   width: 20%;
+   height: 20%;
+   background: red;
+   opacity: .6;
+ }
+ .mobile-btn:hover {
+   background: blue;
+ }
+
+ .up {
+   top: 10%;
+   left:20%;
+
+ }
+
+ .left {
+   top: 45%;
+   left: 0%;
+ }
+
+ .right {
+   top: 45%;
+   left: 40%;
+ }
+
+ .down {
+   top: 80%;
+   left: 20%;
+ }
+
+ @media (min-width: 800px) {
+   .mobile-controls {
+     opacity: 0;
+   }
+ }

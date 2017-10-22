@@ -10,10 +10,13 @@ export default class extends Component {
 
   componentDidMount() {
 
+    this.appWidth = document.getElementsByClassName('App')[0].offsetWidth;
+    this.gridSize = (this.appWidth < 900)? this.appWidth *.8: 900;
+
     this.tile = new Image( 128, 140);
     this.character = new Image()
     this.tile.addEventListener('load',
-      this.updateCanvas(this.props.dungeonMap, this.props.playerLocation)
+      this.updateCanvas(this.props.dungeonMap, this.props.playerLocation, this.gridSize)
     );
     this.tile.src = tiles;
     this.character.src = characters;
@@ -24,11 +27,10 @@ export default class extends Component {
   }
   componentDidUpdate() {
 
-    this.updateCanvas(this.props.dungeonMap, this.props.playerLocation);
+    this.updateCanvas(this.props.dungeonMap, this.props.playerLocation, this.gridSize);
   }
-  updateCanvas(grid, playerLocation) {
-    const gridSize = 900;
-    const sqrSize = 60;
+  updateCanvas(grid, playerLocation, gridSize) {
+    const sqrSize = gridSize / 15;
     const srcSqr = 16;
 
     let visableGrid = grid.filter((row, x) => {
@@ -171,6 +173,6 @@ export default class extends Component {
 
 
   render() {
-    return (<canvas ref="canvas" height={900} width={900}></canvas>)
+    return (<canvas ref="canvas" height={this.gridSize} width={this.gridSize}></canvas>)
   }
 }
