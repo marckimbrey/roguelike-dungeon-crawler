@@ -12,36 +12,37 @@
  }
 
  .mobile-btn {
-   font-size: 2rem;
+   font-size: 3em;
    font-weight: bold;
    position: absolute;
    width: 20%;
-   height: 20%;
-   background: red;
+   height: 30%;
+   background: #888;
    opacity: .6;
+   border-radius: 5px;
  }
  .mobile-btn:hover {
-   background: blue;
+   background: #aaa;
  }
 
  .up {
-   top: 10%;
+   top: 0%;
    left:20%;
 
  }
 
  .left {
-   top: 45%;
+   top:35%;
    left: 0%;
  }
 
  .right {
-   top: 45%;
+   top: 35%;
    left: 40%;
  }
 
  .down {
-   top: 80%;
+   top: 70%;
    left: 20%;
  }
 
